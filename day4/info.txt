@@ -74,3 +74,100 @@ git commit
 
 После merge текущая ветка содержит историю обеих веток,
 но вторая ветка остаётся на своём собственном commit.
+
+## Вечерняя сессия
+
+Day 4 — Git remote, upstream, fetch, pull, merge
+
+1. Upstream
+Локальная ветка может отслеживать удалённую ветку:
+Linux → origin/Linux
+
+Проверить upstream:
+git branch -vv
+
+Установить upstream:
+git branch -u origin/<branch>
+
+Убрать upstream:
+git branch --unset-upstream
+
+
+2. Push
+Если upstream уже настроен:
+git push
+
+Создать remote-ветку и установить upstream:
+git push -u origin <branch>
+
+Отправить текущий HEAD в конкретную remote-ветку:
+git push origin HEAD:<branch>
+
+При этом upstream текущей ветки не меняется.
+
+
+3. Fetch
+git fetch
+
+Fetch обновляет локальную информацию о remote-ветках, но не изменяет
+текущую рабочую ветку.
+
+Он может:
+- обновить существующий origin/<branch>;
+- создать новый origin/<branch>, которого раньше локально не было.
+
+Например:
+GitHub: feature → C
+
+После git fetch:
+origin/feature → C
+
+
+4. Diff
+git diff Linux origin/Linux
+
+Позволяет посмотреть разницу между локальной веткой и актуальным
+состоянием remote-tracking ветки.
+
+
+5. Pull
+git pull
+
+Забирает изменения из upstream и интегрирует их в текущую ветку.
+
+Можно явно указать remote и ветку:
+git pull origin feature
+
+Это позволяет забрать feature в текущую ветку, даже если её upstream
+настроен на другую ветку.
+
+
+6. Merge
+git merge <branch>
+
+Вливает локальную ветку в текущую.
+
+Если возникает конфликт:
+исправить файл
+→ git add <file>
+→ git commit
+
+Также можно использовать remote-tracking ветку:
+git merge origin/<branch>
+
+
+7. Главная схема работы с remote
+
+git fetch
+→ обновить информацию
+
+git diff
+→ посмотреть изменения
+
+решить, нужны ли они
+
+git pull / git merge
+→ интегрировать изменения
+
+git push
+→ отправить результат
