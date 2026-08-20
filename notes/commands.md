@@ -139,7 +139,7 @@ git merge merge-test
 Если истории разошлись, Git может создать merge commit.
 Если изменения конфликтуют, Git остановит merge и попросит разрешить конфликт вручную.
 
-git merge <remote>/<branch> - git merge origin/Linux вливает удаленную ветку в текущую.
+git merge "remote"/"ветка" - git merge origin/Linux вливает удаленную ветку в текущую.
 
 git switch "название" - переключает на указаную ветку
 
