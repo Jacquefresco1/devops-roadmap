@@ -1,0 +1,76 @@
+# Day 4 — Git branches, upstream, fetch, pull, merge
+
+## Remote и upstream
+
+origin — имя удалённого репозитория.
+
+upstream — удалённая ветка, которую отслеживает текущая локальная веткa, обычно они связаны если ветка main, удаленный репозиторий будет origin/main..
+
+git branch -vv
+Показывает локальные ветки, их upstream и последний commit.
+
+git branch -u origin/Linux
+Изменяет upstream текущей локальной ветки на origin/Linux(либо любой другой, которую укажешь).
+
+git branch --unset-upstream
+Удаляет upstream текущей локальной ветки.
+
+## Push
+
+git push -u origin Linux
+Отправляет локальную Linux в origin/Linux и устанавливает upstream:
+Linux → origin/Linux.
+
+После этого обычно достаточно git push.
+
+git push origin HEAD:Linux
+Отправляет текущую ветку (HEAD) в удалённую ветку Linux.
+Используется, когда локальное и удалённое имя ветки отличаются.
+
+## Fetch
+
+git fetch
+Получает с remote новые данные и обновляет локальные remote-tracking ветки
+(origin/main, origin/Linux и т.д.), но не изменяет текущую локальную ветку. Обновляет историю последних изменений, которую можно проверить, перед тем как делать git pull. То есть можно вытянуть через git diff "локальная ветка" "upstream" инфу о том в чем отличие и что было изменено..
+
+Пример:
+
+Linux        → A
+origin/Linux → A
+
+После появления нового commit на GitHub:
+
+git fetch
+
+Linux        → A
+origin/Linux → B
+
+Теперь можно посмотреть изменения:
+
+git diff Linux origin/Linux
+
+## Pull
+
+git pull
+Получает изменения с upstream и интегрирует их в текущую локальную ветку.
+
+Упрощённо:
+git pull = git fetch + интеграция изменений.
+
+## Merge
+
+git merge <branch>
+Интегрирует указанную локальную ветку в текущую.
+
+Merge не делает две ветки одной веткой.
+
+Если истории разошлись, может появиться merge commit.
+
+Если Git не может автоматически объединить изменения, возникает конфликт.
+Конфликт нужно исправить вручную, затем:
+
+git add <file>
+git commit
+
+После merge текущая ветка содержит историю обеих веток,
+но вторая ветка остаётся на своём собственном commit.
