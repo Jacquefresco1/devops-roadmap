@@ -1,4 +1,5 @@
 ## Команды для Linux
+Merge-test
 
 Upstream_test, сравиваем fetch и pull #2 #3
 ## Навигация
