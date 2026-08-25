@@ -177,6 +177,19 @@ git rebase --continue — продолжить rebase после разреше�
 
 git rebase --abort — отменить незавершённый rebase и вернуть состояние до его начала.
 
+git restore --source C --staged --worktree config.txt — берёт config.txt из commit C; восстанавливает его в working tree; одновременно обновляет staging.
+
+git restore --source C config.txt — Если нужен только working tree
+
+git log origin/feature..feature --oneline — Показывает commit’ы, которые есть в feature, но отсутствуют в origin/feature.
+Можно сделать наоборот. 
+
+git log -1 --oneline — Быстрый способ посмотреть последний коммит.
+
+git push --force-with-lease — Используется, когда история уже была опубликована, а затем переписана, например через rebase.
+
+git push --force — но он грубее. Для нормальной практики запоминаем прежде всего --force-with-lease.
+
 git rebase --skip — пропустить текущий commit, который Git пытается перенести.
 
 ## Последовательность Git
