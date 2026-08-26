@@ -196,7 +196,7 @@ git rebase --skip — пропустить текущий commit, который
 изменил файл -} git status -} git diff -} git add файл -} git commit -m "описание того что сделал" -} git log --oneline
 
 ## BASH
-##Variables
+## Variables
 name="Alex" - Создание переменной.
 
 $name - Подстановка значения переменной.
