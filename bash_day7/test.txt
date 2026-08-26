@@ -1,0 +1,5 @@
+if [ -d backup ] && [ -f test.txt ]; then
+	echo "file and directory exist"
+else
+	echo "directory or file does not exist"
+fi
