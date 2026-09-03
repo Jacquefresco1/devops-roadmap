@@ -45,10 +45,10 @@ check_system() {
 }
 check_system "$1"
 status_1=$?
-if [ "$status" -eq 0 ] || [ "$status_1" -eq 0 ]; then
-	echo "System Ok"
+if [ "$status" -eq 2 ] || [ "$status_1" -eq 2 ]; then
+	echo "Find error"
 elif [ "$status" -eq 1 ] || [ "$status_1" -eq 1 ]; then
 	echo "System needs attention"
 else
-	echo "Find error"
+	echo "System OK"
 fi
