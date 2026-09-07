@@ -30,7 +30,7 @@ for pattern in "$@"; do
 			overall_status=1
 		fi
 	else
-		info=$(find "$1" -type f -name "$2" -size +10M -mtime +7 -exec ls -lh {} \;)
+		info=$(find "$directory" -type f -name "$pattern" -size +10M -mtime +7 -exec ls -lh {} \;)
 		number=$(echo "$files" | wc -l)
 		case "$pattern" in
 			*.sh)
