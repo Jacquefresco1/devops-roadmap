@@ -698,6 +698,317 @@ classify_files "${files[@]}"
 * `"$@"` внутри функции;
 * сбор нескольких результатов в отдельные массивы.
 
+# Bash — Associative Arrays
+
+## Что такое associative array
+
+Associative array хранит данные в формате:
+
+```text
+key → value
+```
+
+В отличие от обычного indexed array:
+
+```text
+index → value
+```
+
+Создание:
+
+```bash
+declare -A types
+```
+
+`declare` — встроенная команда Bash.
+
+`-A` — опция `declare`, которая объявляет переменную как associative array.
+
+`types` — обычное имя переменной. Можно использовать другое допустимое имя:
+
+```bash
+declare -A file_types
+declare -A services
+declare -A actions
+```
+
+---
+
+## Создание элементов
+
+```bash
+declare -A types
+
+types["*.sh"]="Shell"
+types["*.conf"]="Config"
+types["*.log"]="Logs"
+types["*.txt"]="Text"
+```
+
+Здесь:
+
+```text
+key       value
+*.sh      Shell
+*.conf    Config
+*.log     Logs
+*.txt     Text
+```
+
+Одинаковый синтаксис используется для создания и изменения:
+
+```bash
+types["*.sh"]="Bash Script"
+```
+
+Если ключ уже существует → значение заменяется.
+
+Если ключа нет → создаётся новый элемент.
+
+---
+
+## Получение значения по ключу
+
+```bash
+echo "${types["*.sh"]}"
+```
+
+→
+
+```text
+Shell
+```
+
+Associative array использует точное соответствие ключа.
+
+Если:
+
+```bash
+pattern="*.sh"
+```
+
+то:
+
+```bash
+echo "${types[$pattern]}"
+```
+
+означает:
+
+```text
+$pattern
+   ↓
+*.sh
+   ↓
+types["*.sh"]
+   ↓
+Shell
+```
+
+То есть переменную можно использовать как динамический ключ.
+
+---
+
+## Все значения
+
+```bash
+echo "${types[@]}"
+```
+
+Выводит все значения associative array.
+
+Порядок элементов не гарантирован.
+
+---
+
+## Все ключи
+
+```bash
+echo "${!types[@]}"
+```
+
+`!` здесь означает получение ключей вместо значений.
+
+Например:
+
+```bash
+for pattern in "${!types[@]}"; do
+    echo "$pattern"
+done
+```
+
+---
+
+## Перебор ключей и значений
+
+```bash
+for pattern in "${!types[@]}"; do
+    echo "$pattern -> ${types[$pattern]}"
+done
+```
+
+Логика:
+
+```text
+"${!types[@]}"
+      ↓
+    ключи
+      ↓
+  $pattern
+      ↓
+${types[$pattern]}
+      ↓
+значение этого ключа
+```
+
+Например:
+
+```text
+*.sh -> Shell
+*.conf -> Config
+*.log -> Logs
+```
+
+Порядок строк не гарантирован.
+
+---
+
+## Associative array и `*`
+
+Очень важно: `*` не означает автоматически «что угодно» во всех контекстах Bash.
+
+В `case`:
+
+```bash
+case "$file" in
+    *.sh)
+        echo "Shell"
+    ;;
+esac
+```
+
+`*.sh` является **pattern**.
+
+Поэтому:
+
+```text
+app.sh → подходит
+deploy.sh → подходит
+test.conf → не подходит
+```
+
+Но в associative array:
+
+```bash
+types["*.sh"]="Shell"
+```
+
+`*.sh` — это **буквальный ключ**.
+
+Associative array не выполняет pattern matching при поиске ключа.
+
+Если:
+
+```bash
+pattern="app.sh"
+```
+
+то:
+
+```bash
+${types[$pattern]}
+```
+
+ищет:
+
+```bash
+types["app.sh"]
+```
+
+а не:
+
+```bash
+types["*.sh"]
+```
+
+Поэтому:
+
+```text
+case
+→ pattern matching
+
+associative array
+→ exact key lookup
+```
+
+Это фундаментальное различие.
+
+---
+
+## Associative array + обычный массив
+
+Можно иметь два массива с разными ролями.
+
+Например:
+
+```bash
+files=("*.sh" "*.yaml" "*.log")
+
+declare -A types
+types["*.sh"]="Shell"
+types["*.yaml"]="YAML"
+types["*.log"]="Logs"
+```
+
+И пройти по первому массиву:
+
+```bash
+for pattern in "${files[@]}"; do
+    echo "$pattern -> ${types[$pattern]}"
+done
+```
+
+Здесь:
+
+```text
+files
+  ↓
+$pattern
+  ↓
+types[$pattern]
+  ↓
+соответствующее значение
+```
+
+Это позволяет использовать associative array как **mapping**:
+
+```text
+ключ → связанное с ним значение
+```
+
+---
+
+## Практическое применение
+
+Associative arrays полезны для хранения соответствий:
+
+```text
+pattern → type
+service → port
+environment → path
+status → description
+extension → handler
+```
+
+Главная идея:
+
+```text
+key → value
+```
+
+а не просто хранение последовательности элементов.
+
+
 ## Variables
 
 name="Alex" - Создание переменной.
