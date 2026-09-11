@@ -1,0 +1,7 @@
+192.168.1.10 - - [10/Sep/2026] "GET /home" 200
+10.0.0.5 - - [10/Sep/2026] "POST /login" 401
+192.168.1.10 - - [10/Sep/2026] "GET /admin" 403
+172.16.0.3 - - [10/Sep/2026] "GET /api/users" 200
+10.0.0.5 - - [10/Sep/2026] "GET /home" 200
+INVALID LINE NO IP HERE
+203.0.113.7 - - [10/Sep/2026] "DELETE /api/users/5" 500
