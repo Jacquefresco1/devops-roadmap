@@ -698,6 +698,40 @@ grep -E "^(POST|GET)" access.log
 
 ---
 
+# Regex (extended, grep -E / sed -E)
+
+. * + ? ^ $ [abc] [^abc] (a|b) {n,m} \.
+
+grep -E "pattern" file       # поиск с extended regex
+grep -Ev "pattern" file      # инверсия
+grep -Ec "pattern" file      # количество совпадений
+grep -Eo "pattern" file      # только совпавшая часть
+grep -Ern "pattern" ./dir    # рекурсивно, с номерами строк
+
+# sed — потоковый редактор
+
+sed 's/old/new/' file        # первое совпадение в строке, вывод
+sed 's/old/new/g' file       # все совпадения, вывод
+sed -i 's/old/new/g' file    # изменить файл на месте
+sed -i.bak 's/old/new/g' file # + бэкап перед изменением
+
+sed '3d' file                 # удалить строку 3, вывод
+sed '/pattern/d' file         # удалить строки по паттерну, вывод
+sed -i '/pattern/d' file      # то же + запись в файл
+
+sed -n '5,10p' file           # вывести строки 5-10 (обязательно -n!)
+sed -n '1p;$p' file            # несколько адресов через ;, $ = последняя строка
+
+sed -E 's/(group).*/\1/' file  # capture group, оставить только совпавшее
+sed -E 's#a/b#c/d#' file       # смена разделителя (удобно при / в тексте)
+
+sed '/pattern/s/old/new/' file # адресация: команда только на строках с pattern
+
+# pipe
+
+cmd1 | cmd2 | cmd3            # вывод предыдущей команды = вход следующей
+grep -v "200$" file | grep -E "^[0-9]" | sed -E 's/(ip).*/\1/'
+
 ## Regex vs glob
 
 Это важно не путать.
