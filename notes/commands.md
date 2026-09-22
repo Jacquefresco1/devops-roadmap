@@ -414,6 +414,37 @@ git rebase --skip — пропустить текущий commit, который
 
 ## BASH
 
+# awk
+
+awk '{ print $1 }' file          # первое поле (разделитель — пробел)
+awk -F',' '{ print $2 }' file    # свой разделитель
+awk '{ print $0 }' file          # вся строка
+
+awk '$1=="value" { print $2 }' file      # условие → действие
+awk '$1!="value" { print }' file         # отрицание (!=)
+awk '$1 !~ /^#/ { print }' file          # regex-условие, не соответствует
+awk '$1 ~ /^#/ { print }' file           # regex-условие, соответствует
+
+awk '{ sum += $2 } END { print sum }' file    # сумма по всем строкам
+awk '$1=="x" { count++ } END { print count }' file  # счётчик по условию
+
+awk '{ print NR, $0 }' file      # номер строки + вся строка
+awk '{ print NF }' file          # количество полей в строке
+awk '{ print $NF }' file         # значение последнего поля
+
+# Обработка ошибок в bash
+
+set -e                # стоп при ошибке любой команды
+set -u                # стоп при необъявленной переменной
+set -o pipefail        # ошибка в pipe учитывается, не только последняя команда
+set -euo pipefail       # всё вместе, первой строкой после shebang
+
+trap 'команда' EXIT    # выполнить при любом завершении скрипта (успех/ошибка/Ctrl+C)
+trap 'команда' INT     # только при Ctrl+C
+trap 'команда' TERM    # только при kill
+
+mktemp                 # создать временный файл с уникальным именем
+
 # Bash — Regex и grep -E
 
 ## grep -E
