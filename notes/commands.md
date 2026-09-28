@@ -3037,3 +3037,50 @@ result="$?"
 Успешный echo обычно возвращает 0.
 
 Поэтому ошибка функции может быть потеряна, если сразу после неё выполнить другую команду.
+# Права и пользователи
+
+ls -l file                     # права, владелец, группа
+chmod u+x file                 # символьный вид: u/g/o/a  + - =
+chmod 755 file                 # числовой, всегда 3 цифры
+chown user:group file          # смена владельца и группы (чужому — с sudo)
+umask                          # маска прав по умолчанию
+
+sudo cmd                       # команда от root
+sudo -l                        # что разрешено
+sudo -k                        # сбросить кэш пароля
+su user                        # стать пользователем (exit — назад)
+
+useradd -m -s /bin/bash name   # создать пользователя с домашней папкой
+passwd name                    # задать пароль
+usermod -aG group name         # добавить в группу (-a обязательно!)
+userdel -r name                # удалить вместе с домашней папкой
+groupadd name                  # создать группу
+id                             # UID, GID, группы
+cat /etc/passwd | grep name    # запись пользователя
+cat /etc/group | grep name     # запись группы
+# Процессы, сервисы, сеть, ssh
+
+ps aux | grep name             # найти процесс
+ps auxww                       # без обрезки строк
+top                            # живой мониторинг (q — выход)
+kill PID                       # SIGTERM; kill -9 PID — принудительно
+killall name
+cmd &                          # запустить в фоне
+jobs / fg %1 / bg %1           # управление фоновыми задачами; Ctrl+Z — пауза
+
+systemctl status|start|stop|restart|enable|disable name
+systemctl list-units --type=service
+
+ip addr                        # адреса интерфейсов
+ping -c 3 host
+ss -tuln                       # слушающие порты; sudo ss -tulnp — с процессами
+
+curl -I url                    # заголовки и статус
+curl -s url | grep -oi "<title>.*</title>"
+
+sudo apt update                # обновить список пакетов
+sudo apt install openssh-server
+ssh-keygen -t ed25519          # создать пару ключей
+ssh-copy-id -i ~/.ssh/id_ed25519.pub user@host
+ssh -i ~/.ssh/id_ed25519 user@host
+ssh-keygen -lf key.pub         # fingerprint
