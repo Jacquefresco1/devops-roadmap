@@ -26,7 +26,7 @@ rmdir - удалить пустую папку.
 # Find
 
 find ищет объекты в файловой системе.
-
+ 
 find . -name "test.sh"
 
 . означает текущую директорию.
@@ -3084,3 +3084,17 @@ ssh-keygen -t ed25519          # создать пару ключей
 ssh-copy-id -i ~/.ssh/id_ed25519.pub user@host
 ssh -i ~/.ssh/id_ed25519 user@host
 ssh-keygen -lf key.pub         # fingerprint
+# Диагностика и мелкие приёмы
+
+id "$1" &>/dev/null        # проверка "существует ли", без вывода на экран
+sudo bash -c 'echo x > file'   # sudo + redirect в один файл (просто sudo echo не сработает)
+
+grep -oi "x" file | wc -l   # количество вхождений — считать СРАЗУ в pipe, не через переменную
+awk 'усл1 || усл2 { print }' file   # ИЛИ-условие в awk
+
+find путь -type f -name "*.sh" -mtime -1   # файлы за последние 24 часа
+... | awk -F '/' '{ print $NF }'            # имя файла из пути, независимо от вложенности
+
+ps aux | awk '$1=="user"' | wc -l   # количество процессов пользователя, без grep
+
+systemctl status имя.socket     # отдельно от имя.service — проверить, кто реально держит порт
